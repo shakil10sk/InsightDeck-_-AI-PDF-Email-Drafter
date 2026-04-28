@@ -4,6 +4,7 @@ namespace App\Domain\Ai;
 
 use App\Domain\Ai\Contracts\AiProvider;
 use App\Domain\Ai\Providers\AnthropicProvider;
+use App\Domain\Ai\Providers\FakeAiProvider;
 use App\Domain\Ai\Providers\OpenAiProvider;
 use App\Enums\AiProviderName;
 use App\Models\User;
@@ -17,6 +18,10 @@ class ProviderManager
      */
     public function forName(AiProviderName $name, ?User $user = null): AiProvider
     {
+        if (config('ai.fake_mode')) {
+            return new FakeAiProvider($name->value);
+        }
+
         return match ($name) {
             AiProviderName::OpenAi => $this->makeOpenAi($user),
             AiProviderName::Anthropic => $this->makeAnthropic($user),
@@ -36,6 +41,9 @@ class ProviderManager
 
     public function embeddingProvider(?User $user = null): AiProvider
     {
+        if (config('ai.fake_mode')) {
+            return new FakeAiProvider('openai');
+        }
         // Embeddings always go through OpenAI for now — the cheapest and most stable option.
         return $this->makeOpenAi($user);
     }

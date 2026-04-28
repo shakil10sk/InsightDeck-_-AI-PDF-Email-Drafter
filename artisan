@@ -3,6 +3,10 @@
 
 use Symfony\Component\Console\Input\ArgvInput;
 
+// Silence PHP 8.5 deprecations from upstream Laravel libs (pending an upstream patch).
+error_reporting(error_reporting() & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+ini_set('display_errors', '0');
+
 define('LARAVEL_START', microtime(true));
 
 // Register the Composer autoloader...

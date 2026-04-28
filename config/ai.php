@@ -1,6 +1,11 @@
 <?php
 
 return [
+    // When true, all AI calls use a deterministic offline FakeAiProvider.
+    // Auto-enabled when no provider keys are configured so the app stays
+    // functional for local dev / public demo.
+    'fake_mode' => env('AI_FAKE', !env('OPENAI_API_KEY') && !env('ANTHROPIC_API_KEY')),
+
     'default_provider' => env('AI_DEFAULT_PROVIDER', 'openai'),
     'default_chat_model' => env('AI_DEFAULT_CHAT_MODEL', 'gpt-4o-mini'),
     'default_embedding_model' => env('AI_DEFAULT_EMBEDDING_MODEL', 'text-embedding-3-small'),

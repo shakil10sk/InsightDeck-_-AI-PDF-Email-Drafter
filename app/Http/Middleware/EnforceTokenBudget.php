@@ -40,9 +40,10 @@ class EnforceTokenBudget
 
         $response = $next($request);
 
-        return $response
-            ->header('X-Tokens-Used-Today', (int) $usedToday)
-            ->header('X-Tokens-Daily-Cap', $cap);
+        // Use headers->set() so we work for both Laravel Response and Symfony StreamedResponse.
+        $response->headers->set('X-Tokens-Used-Today', (string) (int) $usedToday);
+        $response->headers->set('X-Tokens-Daily-Cap', (string) $cap);
+        return $response;
     }
 
     protected function dailyCapFor($user): int
