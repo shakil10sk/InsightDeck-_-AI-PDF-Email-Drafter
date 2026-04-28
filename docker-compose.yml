@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: insightdeck_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: insightdeck
+      POSTGRES_USER: insightdeck
+      POSTGRES_PASSWORD: insightdeck
+    ports:
+      - "5544:5432"
+    volumes:
+      - insightdeck_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U insightdeck -d insightdeck"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  insightdeck_pgdata:
