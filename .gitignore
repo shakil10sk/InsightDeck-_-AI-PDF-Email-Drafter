@@ -27,3 +27,4 @@ yarn-error.log
 /frontend/*.local
 
 /php-dev.ini
+frontend/public/__test/
