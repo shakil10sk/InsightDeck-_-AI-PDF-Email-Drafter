@@ -29,7 +29,9 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   function toggle() {
-    theme.value = theme.value === 'dark' ? 'light' : 'dark'
+    // Toggle visible state, not stored value — handles the 'system' starting case.
+    const isDark = document.documentElement.classList.contains('dark')
+    theme.value = isDark ? 'light' : 'dark'
   }
 
   return { theme, toggle }

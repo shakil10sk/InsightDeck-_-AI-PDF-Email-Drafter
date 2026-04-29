@@ -11,6 +11,11 @@ import Badge from '@/components/ui/Badge.vue'
 import Select from '@/components/ui/Select.vue'
 import { ArrowLeft, MessageSquare, Wand2, ExternalLink } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
+import { marked } from 'marked'
+
+function renderMarkdown(text: string): string {
+  return marked.parse(text || '', { async: false }) as string
+}
 
 const props = defineProps<{ id: string }>()
 const router = useRouter()
@@ -55,7 +60,7 @@ async function startChat() {
         <div class="min-w-0">
           <h1 class="text-2xl font-semibold tracking-tight truncate">{{ document.title }}</h1>
           <div class="text-sm text-muted-foreground">
-            {{ document.original_filename }} · {{ formatBytes(document.size_bytes) }} · {{ document.page_count ?? '?' }} pages · {{ formatRelative(document.created_at) }}
+            {{ document.original_filename }} · {{ formatBytes(document.size_bytes) }} · {{ document.page_count ?? '?' }} {{ document.page_count === 1 ? 'page' : 'pages' }} · {{ formatRelative(document.created_at) }}
           </div>
         </div>
         <Badge :variant="document.status === 'ready' ? 'success' : document.status === 'failed' ? 'destructive' : 'warning'">{{ document.status }}</Badge>
@@ -84,8 +89,8 @@ async function startChat() {
           </div>
         </div>
 
-        <div v-if="summaryStream.isStreaming.value" class="prose-chat whitespace-pre-wrap text-sm">{{ summaryStream.text.value }}</div>
-        <div v-else-if="summary" class="prose-chat whitespace-pre-wrap text-sm">{{ summary.content }}</div>
+        <div v-if="summaryStream.isStreaming.value" class="prose-chat text-sm typing-cursor" v-html="renderMarkdown(summaryStream.text.value)" />
+        <div v-else-if="summary" class="prose-chat text-sm" v-html="renderMarkdown(summary.content)" />
         <p v-else class="text-sm text-muted-foreground">No summary yet — click Generate to create one.</p>
         <p v-if="summaryStream.error.value" class="mt-2 text-sm text-destructive">{{ summaryStream.error.value }}</p>
       </Card>
