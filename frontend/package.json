@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build --base=/spa/ && rm -rf ../public/spa && mkdir -p ../public/spa && cp -R dist/. ../public/spa/",
     "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint . --ext .vue,.ts,.js"

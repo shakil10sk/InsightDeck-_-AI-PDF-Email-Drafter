@@ -25,7 +25,9 @@ const routes: RouteRecordRaw[] = [
 ]
 
 export const router = createRouter({
-  history: createWebHistory(),
+  // BASE_URL matches Vite's `base` config so the router knows it's mounted
+  // under /spa/ in production (and at / when running `npm run dev`).
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 

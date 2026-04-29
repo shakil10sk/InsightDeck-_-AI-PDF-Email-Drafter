@@ -28,3 +28,4 @@ yarn-error.log
 
 /php-dev.ini
 frontend/public/__test/
+/public/spa

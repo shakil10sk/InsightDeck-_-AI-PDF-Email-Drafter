@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// In production we ship under the same origin as the API (Laravel serves the
+// built SPA from public/spa/). In dev VITE_API_URL points at php artisan serve.
+const baseURL = import.meta.env.VITE_API_URL ?? ''
 
 export const api = axios.create({
   baseURL,

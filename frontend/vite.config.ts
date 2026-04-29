@@ -10,6 +10,14 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  // When the SPA is served from Laravel's public/spa/ in production, the
+  // assets need to be prefixed with /spa/. Override with VITE_BASE_URL='/'
+  // when hosting the SPA on a separate domain (e.g. Vercel).
+  base: '/spa/',
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+  },
   server: {
     port: 5173,
     strictPort: true,
