@@ -31,8 +31,13 @@ class DocumentController extends Controller
 
         Storage::disk($disk)->put($path, $file->getContent(), 'private');
 
+        $title = trim((string) $request->input('title', ''));
+        if ($title === '') {
+            $title = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) ?: 'Untitled document';
+        }
+
         $document = Document::create([
-            'title' => $request->string('title')->whenEmpty(fn () => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->toString(),
+            'title' => $title,
             'original_filename' => $file->getClientOriginalName(),
             'mime_type' => $file->getMimeType(),
             'size_bytes' => $file->getSize(),
